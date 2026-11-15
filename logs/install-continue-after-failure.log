@@ -1,0 +1,2 @@
+PASS: a failing tool is reported and the tools after it still install
+PASS: a clean multi-tool install still exits 0

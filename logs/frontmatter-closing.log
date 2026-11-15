@@ -1,0 +1,1 @@
+PASS: unclosed frontmatter is rejected and a valid agent still passes

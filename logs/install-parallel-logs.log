@@ -1,0 +1,1 @@
+PASS: failed parallel worker logs are replayed, status is preserved, and buffers are removed

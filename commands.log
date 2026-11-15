@@ -1,0 +1,142 @@
+=== FPGA RTL Engineer — captured command output ===
+cwd: /workspace
+date: 2026-11-15T17:13:27Z
+
+$ verilator --version
+Verilator 5.020 2024-01-01 rev (Debian 5.020-1)
+
+$ iverilog -V | head -n 1
+Icarus Verilog version 12.0 (stable) ()
+
+$ python3 extract_examples.py engineering/engineering-fpga-rtl-engineer.md /tmp/fpga-extract
+extracted async_fifo.sv, tb_async_fifo.sv, cdc_fifo.xdc, axis_handshake_sva.sv
+exit:0
+
+$ ls -1 async_fifo.sv tb_async_fifo.sv axis_handshake_sva.sv cdc_fifo.xdc
+async_fifo.sv
+axis_handshake_sva.sv
+cdc_fifo.xdc
+tb_async_fifo.sv
+exit:0
+
+$ verilator --lint-only -Wall async_fifo.sv
+exit:0
+
+$ verilator --lint-only -Wall --assert axis_handshake_sva.sv
+exit:0
+
+$ iverilog -g2012 -o tb_async_fifo.vvp async_fifo.sv tb_async_fifo.sv && vvp tb_async_fifo.vvp
+PASS: 1024 words, 0 mismatches
+tb_async_fifo.sv:120: $finish called at 28882000 (1ps)
+exit:0
+
+$ # broken copy: XOR gray-code bit 1 on wr_gray_next only
+wrote async_fifo_broken.sv (gray bit 1 XORed on wr_gray_next)
+exit:0
+
+$ iverilog -g2012 -o tb_broken.vvp async_fifo_broken.sv tb_async_fifo.sv && vvp tb_broken.vvp
+MISMATCH at 0: got 0xxx expected 0x00
+MISMATCH at 49: got 0x41 expected 0x31
+MISMATCH at 52: got 0x44 expected 0x34
+MISMATCH at 53: got 0x45 expected 0x35
+MISMATCH at 56: got 0x48 expected 0x38
+MISMATCH at 57: got 0x49 expected 0x39
+MISMATCH at 58: got 0x4a expected 0x3a
+MISMATCH at 59: got 0x4b expected 0x3b
+FAIL: 16 mismatches after 68 reads (stopping)
+FATAL: tb_async_fifo.sv:103: 
+       Time: 2086000  Scope: tb_async_fifo.reader
+exit:1
+
+$ ./scripts/lint-agents.sh engineering/engineering-fpga-rtl-engineer.md
+Linting 1 agent files...
+
+
+Results: 0 error(s), 0 warning(s) in 1 files.
+PASSED
+exit:0
+
+$ ./scripts/check-agent-originality.sh engineering/engineering-fpga-rtl-engineer.md
+  [OK   ]   0.0%  engineering/engineering-fpga-rtl-engineer.md
+
+Thresholds: WARN >= 20%, FAIL >= 40%  (existing-library baseline max ~1.5%)
+
+PASSED
+exit:0
+
+$ ./scripts/check-divisions.sh
+PASSED: 18 divisions consistent across divisions.json, directories, scripts, and CI.
+exit:0
+
+$ ./scripts/check-tools.sh
+PASSED: 17 tools consistent across tools.json, install.sh, and convert.sh.
+exit:0
+
+$ ./scripts/convert.sh --tool cursor --out /tmp/aa-convert
+
+The Agency -- Converting agents to tool-specific formats
+  Repo:   /workspace
+  Output: /tmp/aa-convert
+  Tool:   cursor
+  Date:   2026-11-15
+
+  [====================] 1/1
+
+
+Converting: cursor (1/1)
+[OK]  Converted 284 agents for cursor
+
+[OK]  Done. Total conversions: 284
+exit:0
+
+$ grep -n "description:\\|alwaysApply" /tmp/aa-convert/cursor/rules/fpga-rtl-engineer.mdc | head -n 8
+2:description: 'Designs synthesizable SystemVerilog and VHDL RTL, self-checking testbenches, CDC-safe clock crossings, timing constraints, and FPGA bring-up.'
+4:alwaysApply: false
+exit:0
+
+$ ./scripts/convert.sh --tool opencode --out /tmp/aa-convert
+
+The Agency -- Converting agents to tool-specific formats
+  Repo:   /workspace
+  Output: /tmp/aa-convert
+  Tool:   opencode
+  Date:   2026-11-15
+
+  [====================] 1/1
+
+
+Converting: opencode (1/1)
+[OK]  Converted 284 agents for opencode
+
+[OK]  Done. Total conversions: 284
+exit:0
+
+$ sed -n "1,12p" /tmp/aa-convert/opencode/agents/fpga-rtl-engineer.md
+---
+name: 'FPGA RTL Engineer'
+description: 'Designs synthesizable SystemVerilog and VHDL RTL, self-checking testbenches, CDC-safe clock crossings, timing constraints, and FPGA bring-up.'
+mode: subagent
+color: '#008080'
+---
+
+# FPGA RTL Engineer
+
+## 🧠 Your Identity & Memory
+- **Role**: Digital design engineer for FPGA and ASIC-bound RTL — SystemVerilog/VHDL, simulation, static timing, and board bring-up
+- **Personality**: Clock-domain paranoid, latch-intolerant, allergic to "it works in sim" without a constraints file
+exit:0
+
+$ bash scripts/test-convert-outputs.sh
+Results: 32 passed, 0 failed  (284 roster agents x 15 tools)
+PASSED
+exit:0
+
+$ git log -1 --format="%H %s"
+76ec272592af0643f658d161e81ec46946edf883 feat(engineering): add FPGA and RTL Engineer agent
+
+$ git diff --stat upstream/main
+ README.md                                    |   1 +
+ engineering/engineering-fpga-rtl-engineer.md | 423 +++++++++++++++++++++++++++
+ scripts/convert-outputs.sha256               |   1 +
+ 3 files changed, 425 insertions(+)
+

@@ -1,0 +1,5 @@
+PASS: unrelated destination remains untouched
+PASS: a prior Agency plugin upgrades normally
+PASS: fresh Hermes installation works normally
+PASS: a trailing slash on a symlinked destination leaves its target intact
+PASS: re-installing over a --link install keeps the clone intact

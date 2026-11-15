@@ -1,0 +1,1 @@
+PASS: nested and unclosed fences are rejected; correctly nested fences and indented closers pass

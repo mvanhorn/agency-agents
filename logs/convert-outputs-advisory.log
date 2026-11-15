@@ -1,0 +1,5 @@
+  ADVISORY manifest drift — new agents: fpga-rtl-engineer
+           (expected for agent additions/edits; maintainers regenerate the manifest when this lands)
+
+Results: 32 passed, 0 failed  (284 roster agents x 15 tools)
+PASSED

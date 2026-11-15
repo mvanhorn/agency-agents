@@ -1,0 +1,22 @@
+$ verilator --lint-only -Wall async_fifo.sv
+exit:0
+
+$ iverilog -g2012 -o tb.vvp async_fifo.sv tb_async_fifo.sv && vvp tb.vvp
+PASS: 1024 words, 0 mismatches
+tb_async_fifo.sv:120: $finish called at 28882000 (1ps)
+exit:0
+
+$ # XOR gray bit 1 on wr_gray_next only
+$ iverilog -g2012 -o tb_broken.vvp async_fifo_broken.sv tb_async_fifo.sv && vvp tb_broken.vvp
+MISMATCH at 0: got 0xxx expected 0x00
+MISMATCH at 49: got 0x41 expected 0x31
+MISMATCH at 52: got 0x44 expected 0x34
+MISMATCH at 53: got 0x45 expected 0x35
+MISMATCH at 56: got 0x48 expected 0x38
+MISMATCH at 57: got 0x49 expected 0x39
+MISMATCH at 58: got 0x4a expected 0x3a
+MISMATCH at 59: got 0x4b expected 0x3b
+FAIL: 16 mismatches after 68 reads (stopping)
+FATAL: tb_async_fifo.sv:103: 
+       Time: 2086000  Scope: tb_async_fifo.reader
+exit:1

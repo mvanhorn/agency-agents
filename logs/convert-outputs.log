@@ -1,0 +1,4 @@
+  (manifest includes agent fpga-rtl-engineer)
+
+Results: 32 passed, 0 failed  (284 roster agents x 15 tools)
+PASSED

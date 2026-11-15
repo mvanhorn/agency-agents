@@ -1,0 +1,19 @@
+=== lint-agents ===
+Linting 1 agent files...
+
+
+Results: 0 error(s), 0 warning(s) in 1 files.
+PASSED
+exit:0
+=== originality ===
+  [OK   ]   0.0%  engineering/engineering-fpga-rtl-engineer.md
+
+Thresholds: WARN >= 20%, FAIL >= 40%  (existing-library baseline max ~1.5%)
+
+PASSED
+exit:0
+=== convert-outputs strict ===
+
+Results: 32 passed, 0 failed  (284 roster agents x 15 tools)
+PASSED
+exit:0

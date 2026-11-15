@@ -1,0 +1,1 @@
+PASS: unknown options exit non-zero with usage on stderr; --help documents every convert.sh option

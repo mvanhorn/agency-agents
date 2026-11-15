@@ -1,0 +1,1 @@
+PASS: install.sh rejects unknown agent selections and accepts display names, file stems, and runbook rosters

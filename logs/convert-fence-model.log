@@ -1,0 +1,1 @@
+PASS: the outputs eval parses indented code fences like lib.sh and GitHub

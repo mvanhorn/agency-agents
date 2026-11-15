@@ -1,0 +1,5 @@
+  [OK   ]   0.0%  engineering/engineering-fpga-rtl-engineer.md
+
+Thresholds: WARN >= 20%, FAIL >= 40%  (existing-library baseline max ~1.5%)
+
+PASSED

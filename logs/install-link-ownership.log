@@ -1,0 +1,1 @@
+PASS: --link skips user files and foreign links, replaces its own links, and continues

@@ -1,0 +1,2 @@
+PASS: --tool all rejects a shared destination collision before writing
+PASS: --tool all permits compatible tools to share a destination
